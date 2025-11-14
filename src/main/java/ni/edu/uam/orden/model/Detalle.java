@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
 
 @Embeddable
 @Getter
@@ -16,5 +17,14 @@ public class Detalle {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Producto producto;
+
+    private BigDecimal precioPorUnidad;
+
+    public BigDecimal getSubtotal() {
+        if (precioPorUnidad == null) {
+            return BigDecimal.ZERO;
+        }
+        return precioPorUnidad.multiply(new BigDecimal(cantidad));
+    }
 
 }
