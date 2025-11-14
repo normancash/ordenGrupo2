@@ -4,13 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import ni.edu.uam.orden.calculators.CalculatorNumeroOrden;
 import org.openxava.annotations.DefaultValueCalculator;
+import org.openxava.annotations.ListProperties;
 import org.openxava.annotations.PropertyValue;
 import org.openxava.annotations.ReadOnly;
 import org.openxava.calculators.CurrentLocalDateCalculator;
 import org.openxava.calculators.CurrentYearCalculator;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -24,10 +27,20 @@ public class Orden extends BaseEntity{
             value= CalculatorNumeroOrden.class,
             properties = @PropertyValue(name="anioFiscal")
             )
+    @ReadOnly
     private int numeroOrden;
     @DefaultValueCalculator(
             CurrentLocalDateCalculator.class)
     @ReadOnly
     private LocalDate fecha;
     private String descripcion;
+
+    @ElementCollection
+    @ListProperties(
+            "producto.nombre" +
+            ",cantidad" +
+            ",producto.categoria.nombre" +
+            ",producto.precio"
+    )
+    Collection<Detalle> detalles;
 }
