@@ -38,9 +38,9 @@ public class Orden extends BaseEntity{
     @ElementCollection
     @ListProperties(
             "producto.nombre" +
+            ",precioPorUnidad" +
             ",cantidad" +
-            ",producto.categoria.nombre" +
-            ",producto.precio"
+            ",subtotal"
     )
     Collection<Detalle> detalles;
 }

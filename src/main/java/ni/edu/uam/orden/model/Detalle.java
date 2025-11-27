@@ -2,6 +2,8 @@ package ni.edu.uam.orden.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ni.edu.uam.orden.calculators.CalculatorPrecioPorUnidad;
+import org.openxava.annotations.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -18,8 +20,20 @@ public class Detalle {
     @ManyToOne(fetch = FetchType.LAZY)
     private Producto producto;
 
+    @DefaultValueCalculator(
+            value= CalculatorPrecioPorUnidad.class,
+            properties = @PropertyValue(
+                    name="numeroProducto",
+                    from = "producto.id"
+            )
+
+    )
+    @Money
+    @ReadOnly
     private BigDecimal precioPorUnidad;
 
+    @Money
+    @Depends("precioPorUnidad,cantidad")
     public BigDecimal getSubtotal() {
         if (precioPorUnidad == null) {
             return BigDecimal.ZERO;

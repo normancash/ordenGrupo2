@@ -14,8 +14,7 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 public class Producto extends BaseEntity{
 
     private String nombre;
