@@ -2,6 +2,7 @@ package ni.edu.uam.orden.actions;
 
 import com.openxava.naviox.actions.ForwardToOriginalURIBaseAction;
 import com.openxava.naviox.impl.SignInHelper;
+import ni.edu.uam.orden.util.Encriptar;
 import org.openxava.jpa.XPersistence;
 import org.openxava.util.Is;
 
@@ -22,7 +23,7 @@ public class Conexion extends ForwardToOriginalURIBaseAction {
         Query query = XPersistence.getManager().createQuery("SELECT COUNT(*)" +
                 " FROM Usuario e WHERE e.usuario = :username AND e.password = :password ");
         query.setParameter("username", userName);
-        query.setParameter("password", password);
+        query.setParameter("password", Encriptar.code(password));
         count =  (Long) query.getSingleResult();
         if (count == 0) {
             addError("unauthorized_user");
